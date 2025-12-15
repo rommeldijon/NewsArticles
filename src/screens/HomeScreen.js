@@ -336,8 +336,8 @@ export default function HomeScreen() {
         </View>
 
         <View testID="articleList">
-         
-          </View>
+         <Articles articles={filteredArticles} categories={categories} />
+        </View>
       </ScrollView>
     </View>
   );
