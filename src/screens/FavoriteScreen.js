@@ -17,27 +17,19 @@ import {
 export default function FavoriteScreen() {
   const navigation = useNavigation();
 
-  // Assuming you have a similar structure for articles in your Redux store
-  const favoriteArticles = useSelector((state) => state.favorites);
-  const favoriteArticlesList = favoriteArticles?.favoriteArticles || [];
+  const favoriteArticlesList = useSelector(
+    (state) => state.favorites.favoriteArticles
+  );
 
   if (favoriteArticlesList.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyText}>No favorite articles yet!</Text>
-        {/* add back button */}
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{
-            backgroundColor: "#2563EB",
-            padding: 10,
-            borderRadius: 5,
-            marginTop: 10,
-            width: 100,
-            alignItems: "center ",
-          }}
+          style={styles.backButton}
         >
-          <Text style={{ color: "#fff" }}>Go back</Text>
+          <Text style={styles.backButtonText}>Go back</Text>
         </TouchableOpacity>
       </View>
     );
@@ -45,57 +37,35 @@ export default function FavoriteScreen() {
 
   return (
     <>
-      {/* Heading */}
       <View testID="FavoriteArticles">
+        <Text style={styles.heading}>My Favorite Articles</Text>
 
-        <Text
-          style={{ fontSize: hp(3.8), marginTop: hp(4), marginLeft: 20 }}
-          className="font-semibold text-neutral-600"
-        >
-          My Favorite Articles
-        </Text>
-
-        <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{
-          backgroundColor: "#2563EB",
-          padding: 10,
-          borderRadius: 5,
-          marginTop: 10,
-          width: 100,
-          alignItems: "center",
-          marginLeft: 20,
-        }}
-        >
-        <Text style={{ color: "#fff" }}>Go back</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Text style={styles.backButtonText}>Go back</Text>
         </TouchableOpacity>
 
-         <FlatList
-        data={favoriteArticlesList}
-        contentContainerStyle={styles.listContentContainer}
-        keyExtractor={(item) => item.idArticle} // Update the key according to your article data
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.cardContainer}
-            onPress={() => navigation.navigate("ArticleDetail", item)} // Navigate to the article detail screen
-          >
-            <Image
-              source={{ uri: item.thumbnail }} // Assuming your articles have a thumbnail field
-              style={styles.articleImage}
-            />
-            <Text style={styles.articleTitle}>
-              {item.title.length > 20
-                ? `${item.title.slice(0, 20)}...`
-                : item.title}
-            </Text>
-          </TouchableOpacity>
-        )}
+        <FlatList
+          data={favoriteArticlesList}
+          contentContainerStyle={styles.listContentContainer}
+          keyExtractor={(item) => item.idArticle}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.cardContainer}
+              onPress={() => navigation.navigate("ArticleDetail", item)}
+            >
+              <Image
+                source={{ uri: item.thumbnail }}
+                style={styles.articleImage}
+              />
+              <Text style={styles.articleTitle}>
+                {item.title.length > 20
+                  ? `${item.title.slice(0, 20)}...`
+                  : item.title}
+              </Text>
+            </TouchableOpacity>
+          )}
         />
-        
       </View>
-    
-     
-     
     </>
   );
 }
@@ -105,37 +75,55 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: wp(4),
   },
   emptyText: {
-    fontSize: hp(2.5),
-    color: "#6B7280", // text-neutral-600
+    fontSize: hp(2.2),
+    color: "#4B5563",
+    textAlign: "center",
+  },
+  backButton: {
+    backgroundColor: "#2563EB",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: 100,
+    alignItems: "center",
+  },
+  backButtonText: {
+    color: "#fff",
+    fontWeight: "600",
+  },
+  heading: {
+    fontSize: hp(3.8),
+    marginTop: hp(4),
+    marginLeft: 20,
+    fontWeight: "600",
+    color: "#52525B",
   },
   listContentContainer: {
     paddingHorizontal: wp(4),
     paddingVertical: hp(2),
   },
   cardContainer: {
-    backgroundColor: "white",
     marginBottom: hp(2),
-    padding: wp(4),
-    borderRadius: 10,
-    elevation: 3, // For Android shadow
-    shadowColor: "#000", // For iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
+    backgroundColor: "#F9FAFB",
+    borderRadius: 12,
+    padding: wp(2),
     flexDirection: "row",
     alignItems: "center",
   },
   articleImage: {
-    width: wp(20),
-    height: wp(20),
-    borderRadius: 10,
-    marginRight: wp(4),
+    width: hp(7),
+    height: hp(7),
+    borderRadius: 9999,
+    marginRight: wp(3),
+    backgroundColor: "rgba(0,0,0,0.05)",
   },
   articleTitle: {
-    fontSize: hp(2),
-    fontWeight: "bold",
-    color: "#4B5563", // text-neutral-700
+    fontSize: hp(1.8),
+    fontWeight: "500",
+    color: "#374151",
+    flexShrink: 1,
   },
 });
