@@ -20,22 +20,26 @@ export default function CustomNewsScreen() {
   const dispatch = useDispatch();
 
   const route = useRoute();
-  const { article } = route.params || {}; // Pass the article object as a parameter
+  const article = route?.params?.article || null;
+
   const favoriteArticles = useSelector(
     (state) => state.favorites.favoriteArticles
   );
-  const isFavourite = favoriteArticles.includes(article.idArticle); // Adjust this according to your article structure
 
   if (!article) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>No Article Details Available</Text>
+        <Text style={styles.articleTitle}>No Article Details Available</Text>
       </View>
     );
   }
 
+  const isFavourite = favoriteArticles?.some(
+    (favArticle) => favArticle.idArticle === article.idArticle
+  );
+
   const handleToggleFavorite = () => {
-    dispatch(toggleFavorite(article)); // Adjust the action to handle articles
+    dispatch(toggleFavorite(article));
   };
 
   return (
