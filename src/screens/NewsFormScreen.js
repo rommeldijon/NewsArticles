@@ -12,7 +12,13 @@ export default function NewsFormScreen({ route, navigation }) {
   );
 
    const saveArticle = async () => {
-    const newArticle = { title, image, description };
+    const newArticle = {
+      idArticle: articleToEdit?.idArticle || Date.now().toString(),
+      title,
+      image,
+      description,
+    };
+
     try {
       const existingArticles = await AsyncStorage.getItem("customArticles");
       const articles = existingArticles ? JSON.parse(existingArticles) : [];
